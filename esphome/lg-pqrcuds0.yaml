@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2021 Diego Elio Pettenò
+#
+# SPDX-License-Identifier: 0BSD
+
+esphome:
+  name: ${node_name}
+  platform: ESP32
+  board: esp-wrover-kit
+
+  includes:
+    - lg-pqrcuds0.h
+
+uart:
+  - id: wall_uart
+    tx_pin: GPIO25
+    rx_pin: GPIO26
+    baud_rate: 104
+  - id: panel_uart
+    tx_pin: GPIO17
+    rx_pin: GPIO16
+    baud_rate: 104
+
+sensor:
+  - id: reference_temperature
+    platform: homeassistant
+    internal: true
+    entity_id: ${reference_temperature}
+
+climate:
+  - platform: custom
+    lambda: |-
+      auto lg_pqrcuds0 = new LgHvac(id(wall_uart), id(reference_temperature));
+      App.register_component(lg_pqrcuds0);
+      return {lg_pqrcuds0};
+
+    climates:
+      - name: ${device_verbose_name}
