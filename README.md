@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021 Diego Elio Pettenò
+
+SPDX-License-Identifier: 0BSD
+-->
+
 # LG PQRCUDS0 compatible ESPHome Component
 
 This repository contains the source code and the EAGLE design files for using
