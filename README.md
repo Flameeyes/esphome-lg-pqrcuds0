@@ -28,6 +28,21 @@ See also:
 * [Saleae Logic](https://www.saleae.com/) high-level analyzer for the
   protocol, at <https://github.com/Flameeyes/saleae-extension-LG-PQRCUDS0>
 
+## Features
+
+The custom component needs [Home Assistant](https://www.home-assistant.io/),
+to provide a reference temperature, as it does not provide its own temperature
+sensor.
+
+Once provided a reference temperature sensor, the component support the
+following features, tested on my flat's HVAC system:
+
+* Cool, heat, fan-only, dehumidifer, and heat-cool modes, with two-point set
+  temperature.
+
+* Fan speed selection (low/medium/high), including "off" speed for idling in
+  heat-cool mode.
+
 ## Board Design Notes
 
 The boards you will find in this repository have been designed by me under
