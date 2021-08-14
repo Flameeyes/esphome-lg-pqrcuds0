@@ -34,8 +34,8 @@ The custom component needs [Home Assistant](https://www.home-assistant.io/),
 to provide a reference temperature, as it does not provide its own temperature
 sensor.
 
-Once provided a reference temperature sensor, the component support the
-following features, tested on my flat's HVAC system:
+Once provided a reference temperature sensor, the component supports the
+following features, tested on my flat's HVAC system (LG ARNU07GB1G2):
 
 * Cool, heat, fan-only, dehumidifer, and heat-cool modes, with two-point set
   temperature.
