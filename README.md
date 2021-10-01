@@ -75,3 +75,22 @@ want to.
 
 Do note that ESPHome libraries are licensed under GNU GPLv3, so combining them
 with logic in the components is still subject to the full license.
+
+## Boxes
+
+The `boxes/` directory contains 3D printable files for a box compatible with
+the rev2 board.
+
+Since this is literally my first 3D design, take it with a grain of salt,
+it particularly suffers from the following minor issues:
+
+* The cover vents on the top are not shaped to keep into consideration the
+  registration corners.
+* The central screw is unnecessary as (at least with Nylon SLS print) it is
+  perfectly possible to keep the box closed by friction-fitting it.
+* There should be a little more clearance for the ESP32 module, by raising
+  the top of the cover.
+* There's no compatible cap to fit into the pushbutton. A different strategy
+  should be pursued.
+* The keyholes should be more tolerant, as screws are often not quite aligned
+  as they should be.
