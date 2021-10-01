@@ -43,36 +43,29 @@ following features, tested on my flat's HVAC system (LG ARNU07GB1G2):
 * Fan speed selection (low/medium/high), including "off" speed for idling in
   heat-cool mode.
 
-## Board Design Notes
+## Board Revision History
 
-The boards you will find in this repository have been designed by me under
-assumptions tha have been found lacking some nuances, and as such may not
-make entire sense.
+### Rev 1
 
-### Panel Bus
+Original production design. It provided support to host the panel to the side
+for going back to the panel on request, with a cutoff switch.
 
-The second LINbus transceiver is meant to be connected to the original panel
-(PQRCUDS0), keeping it from crashing. This was originally intended as a way to
-quickly override the settings without using Home Assistant, while maintaining
-the additional temperature sensing capability offered by the panel itself.
+The cutoff had problems with holding the HVAC unit and the panel in sync when
+switching away from the ESP32, so it never really worked.
 
-While this is possible, I have not implemented support for it in the custom
-component at all, nor tested this in the actual field. The temperature sensor
-on the panel tends to be of very little use, due to its limited range.
+The other reason to keep te panel powered up would have been to maintain a
+readout of the temperature from the panel's on-board temperature sensor, but
+it does not appear to be very reliable or useful, being able to report only
+between 18C and 30C.
 
-### ESP32 Cutoff
+### Rev 2
 
-The 2P2T switch at the top of the board is meant to be used to cut off the
-custom board logic from the LINbus, while maintaining the ESPHome code running
-to be able to retrieve the temperature sensing of the panel and HVAC engine.
+A size- and cost-reduced variant of the original board, with the same logic
+design, but without the secondary bus (and related components), and replacing
+the cutoff switch with a pushbutton that turns off the whole board.
 
-This turned out to be less than useful, as the panel has trouble synchronizing
-with the state of the engine when detached from one to the other, causing it
-to remain in an undefined state for a significant time following it.
-
-A more useful implementation would ensure that the panel would stay powered
-off while the ESP32 has control over the bus, but that also requires powering
-the whole board off when switching.
+The bus connector is now on the back of the board, to make it easier to access
+from the wall itself.
 
 ## License
 

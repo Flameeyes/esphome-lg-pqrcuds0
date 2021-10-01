@@ -3,4 +3,5 @@
 # SPDX-License-Identifier: 0BSD
 
 /eagle/*.b#*
+/eagle/*.pro
 /eagle/*.s#*
