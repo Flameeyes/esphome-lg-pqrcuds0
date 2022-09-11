@@ -192,12 +192,12 @@ public:
 
         buffer[5] = ((buffer[0] + buffer[1] + buffer[2] + buffer[3] + buffer[4]) & 0xFF) ^ 0x55;
 
-        ESP_LOGD("lg_pqrcuds0", "Sending: %s", hexencode(buffer, 6).c_str());
+        ESP_LOGD("lg_pqrcuds0", "Sending: %s", format_hex_pretty(buffer, 6).c_str());
 
         this->wall_bus_->write_array(buffer, 6);
         if (this->wall_bus_->read_array(input_buffer, 12))
         {
-            ESP_LOGD("lg_pqrcuds0", "Received: %s", hexencode(input_buffer, 12).c_str());
+            ESP_LOGD("lg_pqrcuds0", "Received: %s", format_hex_pretty(input_buffer, 12).c_str());
         }
 
         this->publish_state();
