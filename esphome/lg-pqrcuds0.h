@@ -129,6 +129,10 @@ public:
         case climate::CLIMATE_MODE_FAN_ONLY:
             this->action = *this->fan_mode != climate::CLIMATE_FAN_OFF ? climate::CLIMATE_ACTION_FAN : climate::CLIMATE_ACTION_OFF;
             break;
+
+        default:
+            ESP_LOGE("lg_pqrcuds0", "Unsupported climate mode value %d. Turning off.", this->mode);
+            this->action = climate::CLIMATE_ACTION_OFF;
         }
 
         // Provide a default "desired temperature" to give to the engine. We correct it when cooling/heating.
@@ -171,6 +175,9 @@ public:
         case climate::CLIMATE_FAN_HIGH:
             buffer[2] |= 0x20;
             break;
+        default:
+            ESP_LOGE("lg_pqrcuds0", "Unsupported fan mode value %d. Turning off.", *this->fan_mode);
+            buffer[2] |= 0x00;
         }
 
         buffer[1] = (clamp(int(this->current_temperature), 10, 30) - 10) * 2;
