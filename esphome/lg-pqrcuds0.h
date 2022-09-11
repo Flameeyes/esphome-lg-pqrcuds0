@@ -4,6 +4,8 @@
 
 #include "esphome.h"
 
+#define TAG "lg_pqrcuds0"
+
 class LgHvac : public climate::Climate, public PollingComponent
 {
 public:
@@ -131,7 +133,7 @@ public:
             break;
 
         default:
-            ESP_LOGE("lg_pqrcuds0", "Unsupported climate mode value %d. Turning off.", this->mode);
+            ESP_LOGE(TAG, "Unsupported climate mode value %d. Turning off.", this->mode);
             this->action = climate::CLIMATE_ACTION_OFF;
         }
 
@@ -176,7 +178,7 @@ public:
             buffer[2] |= 0x20;
             break;
         default:
-            ESP_LOGE("lg_pqrcuds0", "Unsupported fan mode value %d. Turning off.", *this->fan_mode);
+            ESP_LOGE(TAG, "Unsupported fan mode value %d. Turning off.", *this->fan_mode);
             buffer[2] |= 0x00;
         }
 
@@ -192,12 +194,12 @@ public:
 
         buffer[5] = ((buffer[0] + buffer[1] + buffer[2] + buffer[3] + buffer[4]) & 0xFF) ^ 0x55;
 
-        ESP_LOGD("lg_pqrcuds0", "Sending: %s", format_hex_pretty(buffer, 6).c_str());
+        ESP_LOGD(TAG, "Sending: %s", format_hex_pretty(buffer, 6).c_str());
 
         this->wall_bus_->write_array(buffer, 6);
         if (this->wall_bus_->read_array(input_buffer, 12))
         {
-            ESP_LOGD("lg_pqrcuds0", "Received: %s", format_hex_pretty(input_buffer, 12).c_str());
+            ESP_LOGD(TAG, "Received: %s", format_hex_pretty(input_buffer, 12).c_str());
         }
 
         this->publish_state();
