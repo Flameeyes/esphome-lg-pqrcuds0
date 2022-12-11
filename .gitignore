@@ -5,3 +5,4 @@
 /eagle/*.b#*
 /eagle/*.pro
 /eagle/*.s#*
+venv/
