@@ -96,9 +96,8 @@ public:
 
         this->current_temperature = this->reference_temperature_->get_state();
 
-        // This is true iff we want the fan mode to run in "idle" mode.
-        bool idle_fan_on = *this->fan_mode != climate::CLIMATE_FAN_OFF;
-        float hysteresis = this->action == climate::CLIMATE_ACTION_COOLING ? -this->hysteresis_ : this->hysteresis_;
+        // Mode setting for the idle fan.
+        climate::ClimateAction idle_fan_mode = *this->fan_mode != climate::CLIMATE_FAN_OFF ? climate::CLIMATE_ACTION_FAN : climate::CLIMATE_ACTION_IDLE;
 
         switch (this->mode)
         {
@@ -106,24 +105,40 @@ public:
             this->action = climate::CLIMATE_ACTION_OFF;
             break;
         case climate::CLIMATE_MODE_COOL:
-            if (this->current_temperature >= (this->target_temperature_high + hysteresis))
+            if (this->action == climate::CLIMATE_ACTION_COOLING) {
+                // If we crossed the lower threshold, stop cooling, otherwise continue.
+                if (this->current_temperature <= (this->target_temperature_high - this->hysteresis_))
+                    this->action = idle_fan_mode;
+            } else if (this->current_temperature >= (this->target_temperature_high + this->hysteresis_))
                 this->action = climate::CLIMATE_ACTION_COOLING;
             else
-                this->action = idle_fan_on ? climate::CLIMATE_ACTION_FAN : climate::CLIMATE_ACTION_IDLE;
+                this->action = idle_fan_mode;
             break;
         case climate::CLIMATE_MODE_HEAT:
-            if (this->current_temperature <= (this->target_temperature_low + hysteresis))
+            if (this->action == climate::CLIMATE_ACTION_HEATING) {
+                // If we crossed the higher threshold, stop heating, otherwise continue.
+                if (this->current_temperature >= (this->target_temperature_low + this->hysteresis_))
+                    this->action = idle_fan_mode;
+            } else if (this->current_temperature <= (this->target_temperature_low - this->hysteresis_))
                 this->action = climate::CLIMATE_ACTION_HEATING;
             else
-                this->action = idle_fan_on ? climate::CLIMATE_ACTION_FAN : climate::CLIMATE_ACTION_IDLE;
+                this->action = idle_fan_mode;
             break;
         case climate::CLIMATE_MODE_HEAT_COOL:
-            if (this->current_temperature <= (this->target_temperature_low + hysteresis))
-                this->action = climate::CLIMATE_ACTION_HEATING;
-            else if (this->current_temperature >= (this->target_temperature_high + hysteresis))
+            if (this->action == climate::CLIMATE_ACTION_COOLING) {
+                // If we crossed the lower threshold, stop cooling, otherwise continue.
+                if (this->current_temperature <= (this->target_temperature_high - this->hysteresis_))
+                    this->action = idle_fan_mode;
+            } else if (this->current_temperature >= (this->target_temperature_high + this->hysteresis_))
                 this->action = climate::CLIMATE_ACTION_COOLING;
+            else if (this->action == climate::CLIMATE_ACTION_HEATING) {
+                // If we crossed the higher threshold, stop heating, otherwise continue.
+                if (this->current_temperature >= (this->target_temperature_low + this->hysteresis_))
+                    this->action = idle_fan_mode;
+            } else if (this->current_temperature <= (this->target_temperature_low - this->hysteresis_))
+                this->action = climate::CLIMATE_ACTION_HEATING;
             else
-                this->action = idle_fan_on ? climate::CLIMATE_ACTION_FAN : climate::CLIMATE_ACTION_IDLE;
+                this->action = idle_fan_mode;
             break;
         case climate::CLIMATE_MODE_DRY:
             this->action = climate::CLIMATE_ACTION_DRYING;
