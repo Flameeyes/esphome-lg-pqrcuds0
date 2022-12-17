@@ -222,9 +222,28 @@ public:
         this->wall_bus_->write_array(buffer, 6);
         if (this->wall_bus_->read_array(input_buffer, 12))
         {
+            // Sometimes I found the serial protocol desyncs a bit and can't quite be controlled.
+            // When that happens, instead of REQUEST[6], RESPONSE[6], the data read from the serial
+            // port is OLD-RESPONSE[6],REQUEST[6].
+
+            if (memcmp(input_buffer, buffer, 6) != 0)
+            {
+                ESP_LOGD(TAG, "First 6 bytes don't match output (%s)! Possible de-sync issue, attempting recovery.",
+                         format_hex_pretty(input_buffer, 6).c_str());
+
+                // Try re-constructing the expected buffer.
+                memmove(input_buffer, input_buffer + 6, 6);
+
+                if (!this->wall_bus_->read_array(input_buffer + 6, 6))
+                {
+                    goto publish_state;
+                }
+            }
+
             ESP_LOGD(TAG, "Received: %s", format_hex_pretty(input_buffer, 12).c_str());
         }
 
+    publish_state:
         this->publish_state();
     }
 
