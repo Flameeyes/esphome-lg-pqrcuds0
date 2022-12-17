@@ -105,37 +105,45 @@ public:
             this->action = climate::CLIMATE_ACTION_OFF;
             break;
         case climate::CLIMATE_MODE_COOL:
-            if (this->action == climate::CLIMATE_ACTION_COOLING) {
+            if (this->action == climate::CLIMATE_ACTION_COOLING)
+            {
                 // If we crossed the lower threshold, stop cooling, otherwise continue.
                 if (this->current_temperature <= (this->target_temperature_high - this->hysteresis_))
                     this->action = idle_fan_mode;
-            } else if (this->current_temperature >= (this->target_temperature_high + this->hysteresis_))
+            }
+            else if (this->current_temperature >= (this->target_temperature_high + this->hysteresis_))
                 this->action = climate::CLIMATE_ACTION_COOLING;
             else
                 this->action = idle_fan_mode;
             break;
         case climate::CLIMATE_MODE_HEAT:
-            if (this->action == climate::CLIMATE_ACTION_HEATING) {
+            if (this->action == climate::CLIMATE_ACTION_HEATING)
+            {
                 // If we crossed the higher threshold, stop heating, otherwise continue.
                 if (this->current_temperature >= (this->target_temperature_low + this->hysteresis_))
                     this->action = idle_fan_mode;
-            } else if (this->current_temperature <= (this->target_temperature_low - this->hysteresis_))
+            }
+            else if (this->current_temperature <= (this->target_temperature_low - this->hysteresis_))
                 this->action = climate::CLIMATE_ACTION_HEATING;
             else
                 this->action = idle_fan_mode;
             break;
         case climate::CLIMATE_MODE_HEAT_COOL:
-            if (this->action == climate::CLIMATE_ACTION_COOLING) {
+            if (this->action == climate::CLIMATE_ACTION_COOLING)
+            {
                 // If we crossed the lower threshold, stop cooling, otherwise continue.
                 if (this->current_temperature <= (this->target_temperature_high - this->hysteresis_))
                     this->action = idle_fan_mode;
-            } else if (this->current_temperature >= (this->target_temperature_high + this->hysteresis_))
+            }
+            else if (this->current_temperature >= (this->target_temperature_high + this->hysteresis_))
                 this->action = climate::CLIMATE_ACTION_COOLING;
-            else if (this->action == climate::CLIMATE_ACTION_HEATING) {
+            else if (this->action == climate::CLIMATE_ACTION_HEATING)
+            {
                 // If we crossed the higher threshold, stop heating, otherwise continue.
                 if (this->current_temperature >= (this->target_temperature_low + this->hysteresis_))
                     this->action = idle_fan_mode;
-            } else if (this->current_temperature <= (this->target_temperature_low - this->hysteresis_))
+            }
+            else if (this->current_temperature <= (this->target_temperature_low - this->hysteresis_))
                 this->action = climate::CLIMATE_ACTION_HEATING;
             else
                 this->action = idle_fan_mode;
