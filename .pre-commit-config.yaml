@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2022 Diego Elio Pettenò
+#
+# SPDX-License-Identifier: 0BSD
+
+repos:
+-   repo: https://github.com/fsfe/reuse-tool
+    rev: v1.1.0
+    hooks:
+    - id: reuse
