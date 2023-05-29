@@ -2,22 +2,33 @@
 #
 # SPDX-License-Identifier: 0BSD
 
+# Note: this is intended as a package config that can be included on a device
+# configuration file.
+#
+# It takes the following substitutions, for example:
+#
+# substitutions:
+#   node_name: "study-climate"
+#   device_verbose_name: "Study Climate"
+#   reference_temperature: sensor.study_average_temperature
+
 esphome:
   name: ${node_name}
-  platform: ESP32
-  board: esp-wrover-kit
+  friendly_name: ${device_verbose_name}
 
   includes:
     - lg-pqrcuds0.h
+
+esp32:
+  board: esp-wrover-kit
+  framework:
+    type: esp-idf
+    version: recommended
 
 uart:
   - id: wall_uart
     tx_pin: GPIO25
     rx_pin: GPIO26
-    baud_rate: 104
-  - id: panel_uart
-    tx_pin: GPIO17
-    rx_pin: GPIO16
     baud_rate: 104
 
 sensor:
@@ -34,4 +45,4 @@ climate:
       return {lg_pqrcuds0};
 
     climates:
-      - name: ${device_verbose_name}
+      - name: Climate
