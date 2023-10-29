@@ -19,7 +19,7 @@ Note that this project is neither endorsed, nor sponsored, by either of LG
 or the ESPHome project.
 
 You can find details of the implementation and some of the choices made in the
-design on my blog: https://flameeyes.blog/tag/lg/
+design on my blog: https://flameeyes.blog/tag/lg-pqrcuds0/
 
 See also:
 
